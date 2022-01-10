@@ -1,5 +1,6 @@
 import Responses from '../common/API_Responses';
 import * as fileType from 'file-type';
+import { v4 as uuid } from 'uuid';
 import * as AWS from 'aws-sdk';
 
 const s3 = new AWS.S3();
@@ -25,20 +26,20 @@ exports.handler = async event => {
 
         const buffer = Buffer.from(imageData, 'base64');
         const fileInfo = await fileType.fromBuffer(buffer);
+        const detectedExt = fileInfo.ext;
         const detectedMime = fileInfo.mime;
 
         if (detectedMime !== body.mime) {
             return Responses._400({ message: 'mime types dont match' });
         }
 
-        const key = body.userId;
 
         console.log(`writing image to bucket called ${key}`);
 
         await s3
             .putObject({
                 Body: buffer,
-                Key: key,
+                Key: body.userId,
                 ContentType: body.mime,
                 Bucket: process.env.imageUploadBucket,
                 ACL: 'public-read',
