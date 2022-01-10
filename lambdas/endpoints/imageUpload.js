@@ -11,11 +11,11 @@ exports.handler = async event => {
         const body = JSON.parse(event.body);
 
         if (!body || !body.image || !body.mime) {
-            return Responses._400({ message: 'incorrect body on request' });
+            return Responses._401({ message: 'incorrect body on request' });
         }
 
         if (!allowedMimes.includes(body.mime)) {
-            return Responses._400({ message: 'mime is not allowed ' });
+            return Responses._402({ message: 'mime is not allowed ' });
         }
 
         let imageData = body.image;
@@ -28,7 +28,7 @@ exports.handler = async event => {
         const detectedMime = fileInfo.mime;
 
         if (detectedMime !== body.mime) {
-            return Responses._400({ message: 'mime types dont match' });
+            return Responses._403({ message: 'mime types dont match' });
         }
 
         const key = body.userId;
@@ -52,6 +52,6 @@ exports.handler = async event => {
     } catch (error) {
         console.log('error', error);
 
-        return Responses._400({ message: error.message || 'failed to upload image' });
+        return Responses._404({ message: error.message || 'failed to upload image' });
     }
 };

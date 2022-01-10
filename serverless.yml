@@ -35,7 +35,7 @@ functions:
         handler: lambdas/endpoints/imageUpload.handler
         events:
             - http:
-                  path: image-upload/{ID}
+                  path: image-upload
                   method: POST
                   cors: true
 
@@ -43,7 +43,7 @@ functions:
         handler: lambdas/endpoints/imageRetrieve.handler
         events:
             - http:
-                path: image-retrieve
+                path: image-retrieve/{ID}
                 method: GET
                 cors: true
 resources:
