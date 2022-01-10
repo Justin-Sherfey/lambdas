@@ -4,7 +4,7 @@ provider:
     name: aws
     runtime: nodejs12.x
     profile: serverlessUser
-    region: eu-west-1
+    region: us-west-2
     stage: dev
     environment:
         tableName: ${self:custom.tableName}
@@ -27,63 +27,25 @@ package:
 
 custom:
     tableName: player-points-table
-    bucketName: myserverlessprojectuploadbucket-12312356
-    imageUploadBucket: my-image-upload-bucket-demo-sws
+    bucketName: sherfey-bucket-s3
+    imageUploadBucket: justin-sherfey-s3
 
 functions:
-    getPlayerScore:
-        handler: lambdas/endpoints/getPlayerScore.handler
-        events:
-            - http:
-                  path: get-player-score/{ID}
-                  method: GET
-                  cors: true
-    createPlayerScore:
-        handler: lambdas/endpoints/createPlayerScore.handler
-        events:
-            - http:
-                  path: create-player-score/{ID}
-                  method: POST
-                  cors: true
-    updatePlayerScore:
-        handler: lambdas/endpoints/updatePlayerScore.handler
-        events:
-            - http:
-                  path: update-player-score/{ID}
-                  method: PUT
-                  cors: true
-    getGameScores:
-        handler: lambdas/endpoints/getGameScores.handler
-        events:
-            - http:
-                  path: get-game-scores/{game}
-                  method: GET
-                  cors: true
-
-    getGamesForPlayer:
-        handler: lambdas/endpoints/getGamesForPlayer.handler
-        events:
-            - http:
-                  path: get-games-for-player/{playerID}
-                  method: GET
-                  cors: true
-
-    sendEmail:
-        handler: lambdas/endpoints/sendEmail.handler
-        events:
-            - http:
-                  path: send-email
-                  method: POST
-                  cors: true
-
     imageUpload:
         handler: lambdas/endpoints/imageUpload.handler
         events:
             - http:
-                  path: image-upload
+                  path: image-upload/{ID}
                   method: POST
                   cors: true
 
+    imageRetrieve:
+        handler: lambdas/endpoints/imageRetrieve.handler
+        events:
+            - http:
+                path: image-retrieve
+                method: GET
+                cors: true
 resources:
     Resources:
         DemoBucketUpload:
